@@ -55,8 +55,11 @@ Currently supported types of barrels: oak, spruce, birch, dark_oak, pale_oak, ac
   // List of Ingredients used in cauldron to create it
   "ingredients": [ 
     {
-      // List of item ids, as strings
-      "items": [{/* STRINGS */}], 
+      // List of item ids, as strings. Items are alternatives.
+      "items": [{/* STRINGS */}],
+      // Optional list of exact, finished Brewery drink ids. Drinks are alternatives to items above.
+      // Example: "drinks": ["iuannis:apple_mead"]
+      "drinks": [{/* STRINGS */}],
       // Count of items
       "count": {/* NUMBER */}
     }

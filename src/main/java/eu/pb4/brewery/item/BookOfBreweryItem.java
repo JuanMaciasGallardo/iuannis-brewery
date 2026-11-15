@@ -182,13 +182,24 @@ public class BookOfBreweryItem extends Item implements PolymerItem {
             list.add(Component.translatable("polydex.brewery.ingredients").withStyle(x -> x.withBold(true).withUnderlined(true).withColor(ChatFormatting.GOLD)));
             list.add(Component.empty());
             for (var i : type.ingredients()) {
-                if (i.items().size() == 1) {
-                    list.add(Component.literal(i.count() + " × ").append(i.items().get(0).getName(i.items().getFirst().getDefaultInstance())));
+                var alternatives = new ArrayList<Component>();
+                for (var item : i.items()) {
+                    alternatives.add(item.getName(item.getDefaultInstance()));
+                }
+                for (var drinkId : i.drinks()) {
+                    var drinkType = BreweryInit.DRINK_TYPES.get(drinkId);
+                    alternatives.add(drinkType == null
+                            ? Component.literal(drinkId.toString())
+                            : drinkType.looks().nameSelector().select(7).text());
+                }
+
+                if (alternatives.size() == 1) {
+                    list.add(Component.literal(i.count() + " × ").append(alternatives.getFirst()));
                 } else {
                     var text = Component.translatable("polydex.brewery.any_of").append("\n");
 
-                    for (var item : i.items()) {
-                        text.append(item.getName(item.getDefaultInstance())).append("\n");
+                    for (var alternative : alternatives) {
+                        text.append(alternative).append("\n");
                     }
 
                     list.add(Component.literal(i.count() + " × ").append(Component.translatable("polydex.brewery.any_of_the_list").withStyle(ChatFormatting.ITALIC))

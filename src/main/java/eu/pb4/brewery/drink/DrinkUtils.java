@@ -154,13 +154,13 @@ public class DrinkUtils {
                     && !type.ingredients().isEmpty() && (type.heatSource().isEmpty() || type.heatSource().get().contains(BuiltInRegistries.BLOCK.wrapAsHolder(heatSource)))) && type.requiredContainer().test(container)) {
                 var ing = new ArrayList<ItemStack>(ingredients.size());
                 for (var i : ingredients) {
-                    ing.add(new ItemStack(i.getItem(), i.getCount()));
+                    ing.add(i.copy());
                 }
 
                 for (var ingredient : type.ingredients()) {
                     int count = ingredient.count();
                     for (var stack : ing) {
-                        if (!stack.isEmpty() && ingredient.items().contains(stack.getItem())) {
+                        if (!stack.isEmpty() && matchesIngredient(ingredient, stack)) {
                             count -= stack.getCount();
                             if (count < 0) {
                                 continue base;
@@ -179,5 +179,19 @@ public class DrinkUtils {
         }
 
         return list;
+    }
+
+    private static boolean matchesIngredient(DrinkType.BrewIngredient ingredient, ItemStack stack) {
+        if (ingredient.items().contains(stack.getItem())) {
+            return true;
+        }
+
+        if (!stack.is(BrewItems.DRINK_ITEM)) {
+            return false;
+        }
+
+        var typeId = getTypeId(stack);
+        var type = getType(stack);
+        return typeId != null && type != null && type.isFinished(stack) && ingredient.drinks().contains(typeId);
     }
 }
