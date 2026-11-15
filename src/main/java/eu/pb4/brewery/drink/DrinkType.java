@@ -313,19 +313,24 @@ public record DrinkType(Looks looks,
         }
     }
 
-    public record BrewIngredient(List<Item> items, int count, ItemStack returnedItemStack) {
-        public static Codec<BrewIngredient> CODEC_V1 = RecordCodecBuilder.create(instance -> instance.group(Codec.list(BuiltInRegistries.ITEM.byNameCodec()).fieldOf("items").forGetter(BrewIngredient::items), Codec.INT.optionalFieldOf("count", 1).forGetter(BrewIngredient::count), ItemStack.CODEC.optionalFieldOf("dropped_stack", ItemStack.EMPTY).forGetter(BrewIngredient::returnedItemStack)).apply(instance, BrewIngredient::new));
+    public record BrewIngredient(List<Item> items, List<Identifier> drinks, int count, ItemStack returnedItemStack) {
+        public static Codec<BrewIngredient> CODEC_V1 = RecordCodecBuilder.create(instance -> instance.group(
+                Codec.list(BuiltInRegistries.ITEM.byNameCodec()).optionalFieldOf("items", List.of()).forGetter(BrewIngredient::items),
+                Codec.list(Identifier.CODEC).optionalFieldOf("drinks", List.of()).forGetter(BrewIngredient::drinks),
+                Codec.INT.optionalFieldOf("count", 1).forGetter(BrewIngredient::count),
+                ItemStack.CODEC.optionalFieldOf("dropped_stack", ItemStack.EMPTY).forGetter(BrewIngredient::returnedItemStack)
+        ).apply(instance, BrewIngredient::new));
 
         public static BrewIngredient of(int count, Item... items) {
-            return new BrewIngredient(List.of(items), count, ItemStack.EMPTY);
+            return new BrewIngredient(List.of(items), List.of(), count, ItemStack.EMPTY);
         }
 
         public static BrewIngredient of(int count, ItemStack stack, Item... items) {
-            return new BrewIngredient(List.of(items), count, stack);
+            return new BrewIngredient(List.of(items), List.of(), count, stack);
         }
 
         public static BrewIngredient of(Item... items) {
-            return new BrewIngredient(List.of(items), 1, ItemStack.EMPTY);
+            return new BrewIngredient(List.of(items), List.of(), 1, ItemStack.EMPTY);
         }
     }
 }

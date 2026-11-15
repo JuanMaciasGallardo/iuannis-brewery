@@ -90,7 +90,11 @@ public class PolydexCompatImpl {
             this.type = type;
             List<PolydexIngredient<?>> list = new ArrayList<>();
             for (DrinkType.BrewIngredient x : type.ingredients()) {
-                list.add(PolydexIngredient.of(Ingredient.of(x.items().toArray(new ItemLike[0])), x.count()));
+                List<ItemLike> items = new ArrayList<>(x.items());
+                if (!x.drinks().isEmpty()) {
+                    items.add(BrewItems.DRINK_ITEM);
+                }
+                list.add(PolydexIngredient.of(Ingredient.of(items.toArray(new ItemLike[0])), x.count()));
             }
             this.ingredients = list;
         }
