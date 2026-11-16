@@ -167,9 +167,11 @@ Manual multi-value selection, spread between minimum and maximum. Can have any a
 ```
 
 ## Extra expression functions
-- `smooth_value_days(<MINIMUM_TIME_FOR_BEST>, <TIME_WITHOUT_CHANGING>, <FALLOUT_TIME>, age)` - <VALUES> are in days, returns between 0 and 1, or -1 after fallout
-- `smooth_value_minutes(<MINIMUM_TIME_FOR_BEST>, <TIME_WITHOUT_CHANGING>, <FALLOUT_TIME>, age)` - <VALUES> are in minutes, returns same as above
-- `smooth_value_seconds(<MINIMUM_TIME_FOR_BEST>, <TIME_WITHOUT_CHANGING>, <FALLOUT_TIME>, age)` - <VALUES> are in seconds, returns same as above
+- `smooth_value_days(<MINIMUM_TIME_FOR_BEST>, <TIME_WITHOUT_CHANGING>, <FALLOUT_TIME>, age)` - `<MINIMUM_TIME_FOR_BEST>`, `<TIME_WITHOUT_CHANGING>` and `<FALLOUT_TIME>` are in days; returns a value between 0 and 1, or -1 after fallout. Set `<FALLOUT_TIME>` to a negative number to keep the maximum quality indefinitely after it is reached.
+- `smooth_value_minutes(<MINIMUM_TIME_FOR_BEST>, <TIME_WITHOUT_CHANGING>, <FALLOUT_TIME>, age)` - values are in minutes and otherwise behaves as above.
+- `smooth_value_seconds(<MINIMUM_TIME_FOR_BEST>, <TIME_WITHOUT_CHANGING>, <FALLOUT_TIME>, age)` - values are in seconds and otherwise behaves as above.
+
+For example, `smooth_value_days(30, 30, -1, age) * 10` reaches quality 10 after 30 days and keeps it indefinitely.
 
 
 ## Consumption Effects types

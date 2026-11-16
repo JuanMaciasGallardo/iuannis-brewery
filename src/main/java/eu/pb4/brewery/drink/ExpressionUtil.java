@@ -58,12 +58,13 @@ public class ExpressionUtil {
             @Override
             public double apply(double... args) {
                 var day = args[3] / timeScale;
+                var infiniteQuality = args[2] < 0;
 
                 if (day <= 0) {
                     return 0;
-                } else if (day >= (args[0] + args[1] + args[2])) {
+                } else if (!infiniteQuality && day >= (args[0] + args[1] + args[2])) {
                     return -1;
-                } else if (day >= args[0] && day <= args[0] + args[1]) {
+                } else if (day >= args[0] && (infiniteQuality || day <= args[0] + args[1])) {
                     return valueScale;
                 } else {
                     double x;

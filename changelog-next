@@ -4,3 +4,5 @@
 - Fixed nested delayed effects crashing the game.
 - Fixed simple quality selectors not using correct values.
 - Fixed brews not validating their container.
+- Added an option for drinks to keep their maximum quality indefinitely while aging.
+- Fixed aged drinks being rejected when reinserted into the same barrel type.

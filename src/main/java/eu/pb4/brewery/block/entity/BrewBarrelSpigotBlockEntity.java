@@ -288,7 +288,7 @@ public final class BrewBarrelSpigotBlockEntity extends RandomizableContainerBloc
             var type = DrinkUtils.getType(stack);
             var barrelType = DrinkUtils.getBarrelType(stack);
             return type != null && !type.barrelInfo().isEmpty() &&
-                    (barrelType.isEmpty() || barrelType.equals(this.material.type()) || DrinkUtils.getAgeInTicks(stack) <= 0);
+                    (barrelType.isEmpty() || barrelType.equals(this.material.type().toString()) || DrinkUtils.getAgeInTicks(stack) <= 0);
         } else {
             return stack.is(BrewItems.INGREDIENT_MIXTURE);
         }
